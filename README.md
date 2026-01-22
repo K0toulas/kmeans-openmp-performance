@@ -8,8 +8,8 @@ OpenMP optimization of a K-means clustering implementation (Intel `icx`, `-qopen
 
 ## Approach (summary)
 - Hotspot identification with **Intel VTune** (distance / nearest-cluster / centroid update).
-- Avoided fine-grain and nested parallelism; parallelized over objects (better granularity).
-- Used **thread-local accumulators** for centroid sums/counts; minimized synchronization and tuned scheduling (`dynamic,25`).
+- Avoided fine grain and nested parallelism, parallelized over objects (better granularity).
+- Used **thread-local accumulators** for centroid sums/counts, minimized synchronization and tuned scheduling (`dynamic,25`).
 - Verified outputs vs baseline (membership identical; centers ~`1e-6` abs diff from FP reduction order).
 
 ## Build
