@@ -19,3 +19,19 @@ Starting from a correct sequential K-means implementation, I used **Intel VTune*
 This project uses Intel oneAPI `icx` with OpenMP enabled (per `src/Makefile`):
 ```bash
 make -C src
+```
+## Run 
+```bash
+./src/seq_main -q -b -n 4 -i Image_data/color17695.bin
+./src/seq_main -q    -n 4 -i Image_data/color100.txt
+```
+## Clean
+```bash
+make -C src clean
+```
+## Scaling  
+Control threads via:  
+- `OMP_NUM_THREADS=<N>`
+```
+
+
