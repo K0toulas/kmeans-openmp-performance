@@ -31,7 +31,7 @@ make -C src clean
 ```
 ## Scaling  
 Control threads via:  
-- `OMP_NUM_THREADS=<N>`
-```
+ `OMP_NUM_THREADS=<N>`
+
 
 
