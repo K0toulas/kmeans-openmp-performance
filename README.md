@@ -6,6 +6,8 @@ OpenMP optimization of a K-means clustering implementation (Intel `icx`, `-qopen
 - **3.480s (serial)** → **0.189s (OpenMP, 28 threads)** = **18.4× speedup**
 - 56 threads: **0.216s (16.1×)** (regression from synchronization/overhead)
 
+## Project summary
+Optimized a sequential K-means clustering implementation in C using **OpenMP** on multi-core CPUs. Used **Intel VTune** to identify bottlenecks, implemented parallel regions with reduced synchronization (thread-local accumulation + merge), tuned scheduling (`dynamic,25`), and evaluated scaling across multiple thread counts.
 ## Approach (summary)
 - Hotspot identification with **Intel VTune** (distance / nearest-cluster / centroid update).
 - Avoided fine grain and nested parallelism, parallelized over objects (better granularity).
