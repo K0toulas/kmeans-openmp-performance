@@ -1,20 +1,21 @@
-# K-means (C/OpenMP) — VTune-driven Optimization
+# K-means Clustering (C + OpenMP) — Performance Engineering
 
-OpenMP optimization of a K-means clustering implementation (Intel `icx`, `-qopenmp`) with profiling-driven changes and correctness validation.
+Performance optimized a sequential K-means clustering implementation in C using **OpenMP** on a multi-core CPU. The focus is on profiling driven optimization, reducing synchronization/critical-path overhead and evaluating scaling behavior across thread counts.
+
+## Key result
+- Reduced runtime from **3.480 s** (serial baseline) to **0.189 s** at **28 threads** (**18.4× speedup**).
+- Performance was evaluated across thread counts, best time occurred at 28 threads (56 threads showed diminishing returns due to overhead/pressure).
 
 ## Project summary
-Optimized a sequential K-means clustering implementation in C using **OpenMP** on multi-core CPUs. Used **Intel VTune** to identify bottlenecks, implemented parallel regions with reduced synchronization (thread-local accumulation + merge), tuned scheduling (`dynamic,25`), and evaluated scaling across multiple thread counts.
-## Approach (summary)
-- Hotspot identification with **Intel VTune** (distance / nearest-cluster / centroid update).
-- Avoided fine grain and nested parallelism, parallelized over objects (better granularity).
-- Used **thread-local accumulators** for centroid sums/counts, minimized synchronization and tuned scheduling (`dynamic,25`).
-- Verified outputs vs baseline (membership identical; centers ~`1e-6` abs diff from FP reduction order).
+Starting from a correct sequential K-means implementation, I used **Intel VTune** to identify hotspots and then implemented and tuned OpenMP parallel regions. Key changes included handling of per-thread work, minimizing shared-state contention and selecting an effective scheduling strategy for the workload.
 
-## Result
-- **3.480s (serial)** → **0.189s (OpenMP, 28 threads)** = **18.4× speedup**
-- 56 threads: **0.216s (16.1×)** (regression from synchronization/overhead)
+## Optimization highlights
+- **Profiling-driven workflow:** used Intel VTune to locate hotspots and verify that changes moved time out of the critical path.
+- **OpenMP parallelization:** parallelized the compute heavy regions and tuned thread-level behavior.
+- **Reduced synchronization overhead:** limited contention by avoiding unnecessary shared updates in hot loops.
+- **Scheduling & scaling:** evaluated scaling across thread counts and tuned scheduling (`dynamic,25`) to improve load balance.
 
 ## Build
-Requires Intel oneAPI compiler (`icx`):
+This project uses Intel oneAPI `icx` with OpenMP enabled (per `src/Makefile`):
 ```bash
 make -C src
